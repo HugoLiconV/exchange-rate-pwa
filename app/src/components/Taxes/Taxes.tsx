@@ -1,5 +1,5 @@
 "use client";
-import { Card, NumberInput, Spacer, Text } from "@components/ui";
+import { Card, NumberInput, Text } from "@components/ui";
 import { useQueryString } from "@hooks";
 import { DEFAULT_TAX_RATE } from "app/src/constants";
 import { formatCurrency } from "app/src/utils";
@@ -23,7 +23,7 @@ function Taxes({ localAmountSubtotal }: SubtotalProps) {
   return (
     <Card>
       <span>🧾</span>
-      <Spacer size={3} />
+      <div className="h-3" />
       <div className="flex">
         <div className="flex-1">
           <Text variant="small">Taxes</Text>

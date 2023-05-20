@@ -1,5 +1,5 @@
 "use client";
-import { Card, NumberInput, Spacer, Text } from "@components/ui";
+import { Card, NumberInput, Text } from "@components/ui";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useQueryString } from "@hooks";
 import { formatCurrency } from "app/src/utils";
@@ -22,7 +22,7 @@ function Subtotal({ localAmountSubtotal }: SubtotalProps) {
   return (
     <Card>
       <span>💸</span>
-      <Spacer size={3} />
+      <div className="h-3" />
       <div className="flex">
         <div className="flex-1 flex flex-col">
           <Text variant="small">CAD</Text>

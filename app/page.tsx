@@ -86,6 +86,14 @@ export default async function Home({ searchParams }: PageProps) {
             value: totalTransactionAmount,
             currency: "CAD"
           })}
+          <div className="h-1" />
+          <p className="text-xs text-gray-300">
+            {formatCurrency({
+              value: totalLocalAmount,
+              currency: "MXN",
+              currencyDisplay: "code"
+            })}
+          </p>
         </Button>
       </div>
     </main>

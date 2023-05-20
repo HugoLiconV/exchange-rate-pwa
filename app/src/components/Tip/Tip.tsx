@@ -1,5 +1,5 @@
 "use client";
-import { Card, Spacer, Text } from "@components/ui";
+import { Card, Text } from "@components/ui";
 import { TipSelector } from "./components";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useQueryString } from "@hooks";
@@ -24,9 +24,9 @@ function Tip({ localAmount, transactionAmount }: TipProps) {
   return (
     <Card>
       <span>💁‍♂️</span>
-      <Spacer size={3} />
+      <div className="h-3" />
       <Text variant="small">Tip</Text>
-      <Spacer size={2} />
+      <div className="h-2" />
       <TipSelector
         onChange={handleOnChange}
         defaultOption={
@@ -35,7 +35,7 @@ function Tip({ localAmount, transactionAmount }: TipProps) {
             : searchParams.get("tip")
         }
       />
-      <Spacer size={2} />
+      <div className="h-2" />
       <Text>
         {formatCurrency({
           value: transactionAmount,

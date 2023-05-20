@@ -45,10 +45,10 @@ function Breakdown(props: BreakdownProps) {
                   lastElementClass
                 }
               >
-                <dt className="text-gray-600 font-medium capitalize">
+                <dt className="font-medium capitalize">
                   {label}
                 </dt>
-                <dd className="text-gray-900 flex flex-col items-end">
+                <dd className="flex flex-col items-end">
                   <Text>
                     {formatCurrency({
                       value: props[label].transactionAmount,
