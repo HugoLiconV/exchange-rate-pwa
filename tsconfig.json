@@ -22,10 +22,12 @@
     ],
     "paths": {
       "@hooks/*": ["./app/src/hooks/*"],
+      "@hooks": ["./app/src/hooks/index.ts"],
       "@components/*": ["./app/src/components/*"],
       "@components": ["./app/src/components/index.ts"],
       "@ui/*": ["./app/src/components/ui/*"],
       "@ui": ["./app/src/components/ui/index.ts"],
+      "@services/*": ["./app/src/services/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

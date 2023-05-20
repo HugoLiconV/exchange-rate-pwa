@@ -1,18 +1,52 @@
+"use client";
 import { Card, Spacer, Text } from "@components/ui";
 import { TipSelector } from "./components";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useQueryString } from "@hooks";
+import { formatCurrency, isNullish } from "app/src/utils";
 
-function Tip() {
+type TipProps = {
+  localAmount: number;
+  transactionAmount: number;
+};
+
+function Tip({ localAmount, transactionAmount }: TipProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { createQueryString } = useQueryString();
+
+  const handleOnChange = (value: string) => {
+    router.push(pathname + "?" + createQueryString("tip", value));
+  };
+
   return (
     <Card>
       <span>💁‍♂️</span>
       <Spacer size={3} />
       <Text variant="small">Tip</Text>
       <Spacer size={2} />
-      <TipSelector />
+      <TipSelector
+        onChange={handleOnChange}
+        defaultOption={
+          isNullish(searchParams.get("tip")) ? "0" : searchParams.get("tip")
+        }
+      />
       <Spacer size={2} />
-      <Text>$00.00</Text>
+      <Text>
+        {formatCurrency({
+          value: transactionAmount,
+          currency: "CAD"
+        })}
+      </Text>
       <div className="h-0.5" />
-      <Text variant="small">$00.00</Text>
+      <Text variant="small">
+        {formatCurrency({
+          value: localAmount,
+          currency: "MXN",
+          currencyDisplay: "code"
+        })}
+      </Text>
     </Card>
   );
 }

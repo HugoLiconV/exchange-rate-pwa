@@ -189,17 +189,3 @@ function addThousandsSeparator(n: string, thousandsSeparatorSymbol: string) {
   return n.replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparatorSymbol);
 }
 
-export function formatCurrency({
-  value,
-  currency
-}: {
-  value: number;
-  currency: string;
-}) {
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: currency,
-    maximumFractionDigits: 2,
-    currencyDisplay: "symbol"
-  }).format(value);
-}

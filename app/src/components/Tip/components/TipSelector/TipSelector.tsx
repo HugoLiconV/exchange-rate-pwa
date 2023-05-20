@@ -17,11 +17,17 @@ const options = [
   }
 ];
 
-function TipSelector() {
-  const [selectedOption, setSelectedOption] = useState("");
+type TipSelectorProps = {
+  defaultOption?: string | null;
+  onChange?: (value: string) => void;
+};
+
+function TipSelector({ defaultOption = '0', onChange }: TipSelectorProps) {
+  const [selectedOption, setSelectedOption] = useState(defaultOption);
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
+    onChange?.(event.target.value);
   };
 
   return (
@@ -42,9 +48,7 @@ function TipSelector() {
               checked={isSelected}
               onChange={handleOptionChange}
             />
-            <Text color={isSelected ? "light" : "dark"}>
-              {option.label}
-            </Text>
+            <Text color={isSelected ? "light" : "dark"}>{option.label}</Text>
           </label>
         );
       })}

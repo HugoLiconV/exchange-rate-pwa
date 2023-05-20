@@ -1,43 +1,78 @@
 import { Card, Text } from "@components/ui";
+import { formatCurrency } from "app/src/utils";
 
-function Breakdown() {
+type BreakdownProps = {
+  subtotal: {
+    localAmount: number;
+    transactionAmount: number;
+  };
+  taxes: {
+    localAmount: number;
+    transactionAmount: number;
+  };
+  tip: {
+    localAmount: number;
+    transactionAmount: number;
+  };
+  total: {
+    localAmount: number;
+    transactionAmount: number;
+  };
+};
+
+const breakdownKeys: (keyof BreakdownProps)[] = [
+  "subtotal",
+  "taxes",
+  "tip",
+  "total"
+];
+
+function Breakdown(props: BreakdownProps) {
   return (
     <Card>
       <dl className="flex flex-col w-full">
-        <div className="flex justify-between items-center">
-          <dt className="text-gray-600 font-medium">Subtotal:</dt>
-          <dd className="text-gray-900 flex flex-col items-end">
-            <Text>$110.00</Text>
-            <Text variant="small">MXN 2200.00</Text>
-          </dd>
-        </div>
-        <div className="h-1" />
-        <div className="flex justify-between items-center">
-          <dt className="text-gray-600 font-medium">Taxes:</dt>
-          <dd className="text-gray-900 ">
-            <Text>$110.00</Text>
-            <Text variant="small">MXN 2200.00</Text>
-          </dd>
-        </div>
-        <div className="h-1" />
-        <div className="flex justify-between items-center">
-          <dt className="text-gray-600 font-medium">Tip:</dt>
-          <dd className="text-gray-900 ">
-            <Text>$110.00</Text>
-            <Text variant="small">MXN 2200.00</Text>
-          </dd>
-        </div>
-        <div className="h-1" />
-        <div className="flex justify-between items-center">
-          <dt className="text-gray-600 font-medium">Total:</dt>
-          <dd className="text-gray-900 ">
-            <Text>$110.00</Text>
-            <Text variant="small">MXN 2200.00</Text>
-          </dd>
-        </div>
+        {breakdownKeys.map((label, index) => {
+          const isFirst = index === 0;
+          const isLast = index === breakdownKeys.length - 1;
+          const firstElementClass = isFirst ? "pt-0 " : " ";
+          const lastElementClass = isLast ? "pb-0 " : " ";
+          return (
+            <div key={label}>
+              <div
+                className={
+                  "flex justify-between items-center py-2 " +
+                  firstElementClass +
+                  lastElementClass
+                }
+              >
+                <dt className="text-gray-600 font-medium capitalize">
+                  {label}
+                </dt>
+                <dd className="text-gray-900 flex flex-col items-end">
+                  <Text>
+                    {formatCurrency({
+                      value: props[label].transactionAmount,
+                      currency: "CAD"
+                    })}
+                  </Text>
+                  <Text variant="small">
+                    {formatCurrency({
+                      value: props[label].localAmount,
+                      currency: "MXN",
+                      currencyDisplay: "code"
+                    })}
+                  </Text>
+                </dd>
+              </div>
+              {index !== breakdownKeys.length - 1 && (
+                <div className="border-b" />
+              )}
+            </div>
+          );
+        })}
       </dl>
     </Card>
   );
 }
 
-export default Breakdown
+export default Breakdown;

@@ -29,13 +29,6 @@ function CurrencyInput({ mask, ...props }: CurrencyInputProps) {
       }
       step="any"
       inputMode="decimal"
-      // onChange={e => {
-      //   // unmask value letting only numbers and decimal point
-      //   e.target.value = e.target.value.replace(/[^0-9.]/g, "");
-      //   if (props.onChange) {
-      //     props.onChange(e);
-      //   }
-      // }}
       {...props}
     />
   );

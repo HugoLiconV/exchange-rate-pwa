@@ -1,6 +1,24 @@
+"use client";
 import { Card, NumberInput, Spacer, Text } from "@components/ui";
+import { useQueryString } from "@hooks";
+import { formatCurrency } from "app/src/utils";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-function Taxes() {
+type SubtotalProps = {
+  localAmountSubtotal: number;
+};
+
+function Taxes({ localAmountSubtotal }: SubtotalProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { createQueryString } = useQueryString();
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9.]/g, "");
+    router.push(pathname + "?" + createQueryString("tax", value));
+  };
+
   return (
     <Card>
       <span>🧾</span>
@@ -14,6 +32,8 @@ function Taxes() {
             name="taxes"
             className="w-full"
             mask="percent"
+            defaultValue={searchParams.get("taxes") || "14.975"}
+            onChange={handleOnChange}
           />
         </div>
         <div className="w-4" />
@@ -22,11 +42,16 @@ function Taxes() {
         <div className="flex-1">
           <Text variant="small">MXN</Text>
           <div className="h-2" />
-          <Text>$644.20</Text>
+          <Text>
+            {formatCurrency({
+              value: localAmountSubtotal,
+              currency: "MXN"
+            })}
+          </Text>
         </div>
       </div>
     </Card>
   );
 }
 
-export default Taxes
+export default Taxes;
