@@ -32,7 +32,11 @@ export async function getCurrencyRate(
     apiUrl.searchParams.append(key, queryParams[key].toString())
   );
 
-  const res = await fetch(apiUrl, { cache: "no-store" });
+  const res = await fetch(apiUrl, {
+    next: {
+      revalidate: 60 * 60 * 12 // 12 hours
+    }
+  });
   if (!res.ok) {
     throw new Error("error");
   }

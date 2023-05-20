@@ -2,47 +2,55 @@ import { Breakdown, Subtotal, Taxes, Tip } from "@components";
 import { Button } from "@ui";
 import { getCurrencyRate } from "@services/currencyRate";
 import { PageProps } from ".next/types/app/layout";
-import { formatCurrency, isNullish } from "./src/utils";
+import { formatCurrency, isNullish, sumSafely } from "./src/utils";
+import {
+  DEFAULT_SUBTOTAL,
+  DEFAULT_TAX_RATE,
+  DEFAULT_TIP_RATE
+} from "./src/constants";
+
+type SearchParams = {
+  subtotal: string;
+  tax: string;
+  tip: string;
+};
 
 export default async function Home({ searchParams }: PageProps) {
   const {
-    subtotal: subtotalSearchParam,
-    tax: taxSearchParam,
-    tip: tipSearchParam
-  } = searchParams;
-  const parsedSubtotal = isNullish(subtotalSearchParam)
-    ? 0
-    : parseFloat(subtotalSearchParam);
-  const parsedTax = isNullish(taxSearchParam)
-    ? 14.975
-    : parseFloat(taxSearchParam);
-  const parsedTip = isNullish(tipSearchParam) ? 0 : parseFloat(tipSearchParam);
-
-  const tax = parsedSubtotal * (parsedTax / 100);
-  const tip = parsedSubtotal * (parsedTip / 100);
+    subtotal: parsedSubtotal,
+    tax: parsedTax,
+    tip: parsedTip
+  } = getParsedSearchParams(searchParams);
+  const transactionTax = parsedSubtotal * (parsedTax / 100);
+  const transactionTip = parsedSubtotal * (parsedTip / 100);
 
   const subTotalPromise = getCurrencyRate({
     amount: parsedSubtotal
-  })
+  });
   const taxesPromise = getCurrencyRate({
-    amount: tax
+    amount: transactionTax
   });
   const tipPromise = getCurrencyRate({
-    amount: tip
+    amount: transactionTip
   });
 
-  const [subtotal, taxes, tipAmount] = await Promise.all([
+  const [subtotal, taxes, tip] = await Promise.all([
     subTotalPromise,
     taxesPromise,
     tipPromise
   ]);
 
+  const totalLocalAmount = sumSafely(
+    subtotal.crdhldBillAmt,
+    taxes.crdhldBillAmt,
+    tip.crdhldBillAmt
+  );
 
-  const totalLocalAmount =
-    subtotal.crdhldBillAmt + taxes.crdhldBillAmt + tipAmount.crdhldBillAmt;
-
-  const totalTransactionAmount =
-    subtotal.transAmt + taxes.transAmt + tipAmount.transAmt;
+  const totalTransactionAmount = sumSafely(
+    subtotal.transAmt,
+    taxes.transAmt,
+    tip.transAmt
+  );
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
@@ -51,10 +59,7 @@ export default async function Home({ searchParams }: PageProps) {
         <div className="h-4" />
         <Taxes localAmountSubtotal={taxes.crdhldBillAmt} />
         <div className="h-4" />
-        <Tip
-          localAmount={tipAmount.crdhldBillAmt}
-          transactionAmount={tipAmount.transAmt}
-        />
+        <Tip localAmount={tip.crdhldBillAmt} transactionAmount={tip.transAmt} />
         <div className="h-4" />
         <Breakdown
           subtotal={{
@@ -66,8 +71,8 @@ export default async function Home({ searchParams }: PageProps) {
             transactionAmount: taxes.transAmt
           }}
           tip={{
-            localAmount: tipAmount.crdhldBillAmt,
-            transactionAmount: tipAmount.transAmt
+            localAmount: tip.crdhldBillAmt,
+            transactionAmount: tip.transAmt
           }}
           total={{
             localAmount: totalLocalAmount,
@@ -85,4 +90,28 @@ export default async function Home({ searchParams }: PageProps) {
       </div>
     </main>
   );
+}
+
+function getParsedSearchParams(searchParams: SearchParams) {
+  const {
+    subtotal: subtotalSearchParam,
+    tax: taxSearchParam,
+    tip: tipSearchParam
+  } = searchParams;
+
+  const parsedSubtotal = isNullish(subtotalSearchParam)
+    ? DEFAULT_SUBTOTAL
+    : parseFloat(subtotalSearchParam);
+  const parsedTax = isNullish(taxSearchParam)
+    ? DEFAULT_TAX_RATE
+    : parseFloat(taxSearchParam);
+  const parsedTip = isNullish(tipSearchParam)
+    ? DEFAULT_TIP_RATE
+    : parseFloat(tipSearchParam);
+
+  return {
+    subtotal: parsedSubtotal,
+    tax: parsedTax,
+    tip: parsedTip
+  };
 }

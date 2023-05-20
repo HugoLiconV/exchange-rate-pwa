@@ -1,6 +1,7 @@
 "use client";
 import { Card, NumberInput, Spacer, Text } from "@components/ui";
 import { useQueryString } from "@hooks";
+import { DEFAULT_TAX_RATE } from "app/src/constants";
 import { formatCurrency } from "app/src/utils";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
@@ -32,7 +33,7 @@ function Taxes({ localAmountSubtotal }: SubtotalProps) {
             name="taxes"
             className="w-full"
             mask="percent"
-            defaultValue={searchParams.get("taxes") || "14.975"}
+            defaultValue={searchParams.get("taxes") || `${DEFAULT_TAX_RATE}`}
             onChange={handleOnChange}
           />
         </div>

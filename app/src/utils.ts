@@ -16,3 +16,7 @@ export function formatCurrency({
     currencyDisplay
   }).format(isNullish(value) ? 0 : value);
 }
+
+export function sumSafely(...values: number[]) {
+  return values.reduce((acc, value) => acc + (isNullish(value) ? 0 : value), 0);
+}

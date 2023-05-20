@@ -4,6 +4,7 @@ import { TipSelector } from "./components";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useQueryString } from "@hooks";
 import { formatCurrency, isNullish } from "app/src/utils";
+import { DEFAULT_TIP_RATE } from "app/src/constants";
 
 type TipProps = {
   localAmount: number;
@@ -29,7 +30,9 @@ function Tip({ localAmount, transactionAmount }: TipProps) {
       <TipSelector
         onChange={handleOnChange}
         defaultOption={
-          isNullish(searchParams.get("tip")) ? "0" : searchParams.get("tip")
+          isNullish(searchParams.get("tip"))
+            ? `${DEFAULT_TIP_RATE}`
+            : searchParams.get("tip")
         }
       />
       <Spacer size={2} />
