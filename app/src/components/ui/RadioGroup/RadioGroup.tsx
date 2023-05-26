@@ -38,7 +38,7 @@ function RadioGroup({
           <label
             key={option.value}
             className={`flex-grow flex-1 inline-flex items-center justify-center rounded-3xl p-2 ${
-              isSelected ? "bg-black" : "bg-gray-200"
+              isSelected ? "bg-black" : "bg-slate-100"
             }`}
           >
             <input
@@ -57,11 +57,15 @@ function RadioGroup({
                   <Text variant="xs" color={isSelected ? "light" : "dark"}>
                     {formatCurrency({
                       value: option.localAmount ?? 0,
-                      currency: "MXN"
+                      currency: "MXN",
+                      currencyDisplay: "code"
                     })}
                   </Text>
                   <div className="h-1" />
-                  <Text variant="xs" color={isSelected ? "light" : "dark"}>
+                  <Text
+                    variant="xs"
+                    color={isSelected ? "gray-300" : "gray-600"}
+                  >
                     {formatCurrency({
                       value: option.transactionAmount ?? 0,
                       currency: "CAD"
