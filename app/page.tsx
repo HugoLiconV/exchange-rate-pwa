@@ -9,13 +9,19 @@ export default async function Home({ searchParams }: PageProps) {
     taxRate: searchParams["tax-rate"],
     tipRate: searchParams["tip-rate"]
   });
-  const rate = await getCurrencyRate({
+  const ratePromise = getCurrencyRate({
     amount: 1
   });
+  const usdRatePromise = getCurrencyRate({
+    amount: 1,
+    transCurr: "USD"
+  });
+
+  const [rate, usdRate] = await Promise.all([ratePromise, usdRatePromise]);
 
   return (
     <main className="min-h-screen flex flex-col items-center mx-auto max-w-lg">
-      <Rate rate={rate.crdhldBillAmt} />
+      <Rate rate={rate.crdhldBillAmt} usdRate={usdRate.crdhldBillAmt} />
       <div className="w-full items-center justify-between px-4 pt-6">
         <Subtotal rate={rate.crdhldBillAmt} />
         <div className="h-4" />
