@@ -15,7 +15,7 @@ function Tip({ rate }: TipProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [tipRate, setTipRate] = useState(
-    searchParams.get("tip") || `${DEFAULT_TIP_RATE}`
+    searchParams.get("tip-rate") || `${DEFAULT_TIP_RATE}`
   );
   const { createQueryString } = useQueryString();
   const { subtotal } = getParsedSearchParams({
@@ -44,7 +44,7 @@ function Tip({ rate }: TipProps) {
   }, [rate, subtotal]);
 
   useEffect(() => {
-    router.push(pathname + "?" + createQueryString("tip", tipRate));
+    router.push(pathname + "?" + createQueryString("tip-rate", tipRate));
   }, [pathname, router, tipRate]);
 
   return (
@@ -53,7 +53,7 @@ function Tip({ rate }: TipProps) {
         <span>💁‍♂️</span>
         <Text>Tip</Text>
       </div>
-      <div className="h-2" />
+      <div className="h-3" />
       <RadioGroup
         options={options}
         defaultOption={tipRate}

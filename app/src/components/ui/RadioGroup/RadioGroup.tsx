@@ -54,14 +54,14 @@ function RadioGroup({
               !isNullish(option.transactionAmount) ? (
                 <>
                   <div className="h-2" />
-                  <Text variant="small" color={isSelected ? "light" : "dark"}>
+                  <Text variant="xs" color={isSelected ? "light" : "dark"}>
                     {formatCurrency({
                       value: option.localAmount ?? 0,
                       currency: "MXN"
                     })}
                   </Text>
                   <div className="h-1" />
-                  <Text variant="small" color={isSelected ? "light" : "dark"}>
+                  <Text variant="xs" color={isSelected ? "light" : "dark"}>
                     {formatCurrency({
                       value: option.transactionAmount ?? 0,
                       currency: "CAD"
@@ -69,7 +69,6 @@ function RadioGroup({
                   </Text>
                 </>
               ) : null}
-       
             </div>
           </label>
         );

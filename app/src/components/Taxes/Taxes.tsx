@@ -15,7 +15,7 @@ function Taxes({ rate }: SubtotalProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [taxRate, setTaxRate] = useState(
-    searchParams.get("taxes") || `${DEFAULT_TAX_RATE}`
+    searchParams.get("tax-rate") || `${DEFAULT_TAX_RATE}`
   );
   const { createQueryString } = useQueryString();
   const { subtotal } = getParsedSearchParams({
@@ -44,7 +44,7 @@ function Taxes({ rate }: SubtotalProps) {
   }, [rate, subtotal]);
 
   useEffect(() => {
-    router.push(pathname + "?" + createQueryString("taxes", taxRate));
+    router.push(pathname + "?" + createQueryString("tax-rate", taxRate));
   }, [pathname, router, taxRate]);
 
   return (

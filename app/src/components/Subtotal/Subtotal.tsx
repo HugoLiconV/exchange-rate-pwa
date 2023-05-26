@@ -33,7 +33,9 @@ function Subtotal({ rate }: SubtotalProps) {
       <div className="h-3" />
       <div className="flex">
         <div className="flex-1 flex flex-col">
-          <Text variant="small">CAD</Text>
+          <Text variant="xs" color="gray-600">
+            CAD
+          </Text>
           <div className="h-2" />
           <NumberInput
             id="subtotal"
@@ -49,7 +51,9 @@ function Subtotal({ rate }: SubtotalProps) {
         <div className="border-r"></div>
         <div className="w-4" />
         <div className="flex-1">
-          <Text variant="small">MXN</Text>
+          <Text variant="xs" color="gray-600">
+            MXN
+          </Text>
           <div className="h-2" />
           <Text>
             {formatCurrency({

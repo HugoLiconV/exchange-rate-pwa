@@ -30,21 +30,21 @@ export function sumSafely(...values: number[]) {
 
 type SearchParams = {
   subtotal?: string | null;
-  tax?: string | null;
-  tip?: string | null;
+  taxRate?: string | null;
+  tipRate?: string | null;
 };
 
 export function getParsedSearchParams(searchParams: SearchParams) {
   const {
     subtotal: subtotalSearchParam,
-    tax: taxSearchParam,
-    tip: tipSearchParam
+    taxRate: taxSearchParam,
+    tipRate: tipSearchParam
   } = searchParams;
 
   const parsedSubtotal = isNullish(subtotalSearchParam)
     ? DEFAULT_SUBTOTAL
     : parseFloat(subtotalSearchParam || "0");
-  const parsedTax = isNullish(taxSearchParam)
+  const parsedTaxes = isNullish(taxSearchParam)
     ? DEFAULT_TAX_RATE
     : parseFloat(taxSearchParam || "0");
   const parsedTip = isNullish(tipSearchParam)
@@ -53,7 +53,7 @@ export function getParsedSearchParams(searchParams: SearchParams) {
 
   return {
     subtotal: parsedSubtotal,
-    tax: parsedTax,
-    tip: parsedTip
+    taxRate: parsedTaxes,
+    tipRate: parsedTip
   };
 }

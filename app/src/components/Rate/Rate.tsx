@@ -8,7 +8,9 @@ type RateProps = {
 function Rate({ rate }: RateProps) {
   return (
     <div className="bg-black w-full px-4 pb-4 pt-6">
-      <Text variant="small">CAD</Text>
+      <Text variant="small" color="gray-300">
+        CAD
+      </Text>
       <div className="h-2" />
       <div className="flex gap-1">
         <span>🇨🇦</span>

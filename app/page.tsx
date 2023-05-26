@@ -1,7 +1,9 @@
+import { PageProps } from ".next/types/app/page";
 import { Rate, Subtotal, Taxes, Tip, Total } from "@components";
 import { getCurrencyRate } from "@services/currencyRate";
 
-export default async function Home() {
+export default async function Home({ searchParams }: PageProps) {
+  console.log("🚀 ~ file: page.tsx:6 ~ Home ~ searchParams:", searchParams);
   const rate = await getCurrencyRate({
     amount: 1
   });
