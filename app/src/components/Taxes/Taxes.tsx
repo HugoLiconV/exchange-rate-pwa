@@ -2,25 +2,20 @@
 import { Card, Option, RadioGroup, Text } from "@components/ui";
 import { useQueryString } from "@hooks";
 import { DEFAULT_TAX_RATE } from "app/src/constants";
-import { getParsedSearchParams } from "app/src/utils";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 type SubtotalProps = {
   rate: number;
+  subtotal: number;
 };
 
-function Taxes({ rate }: SubtotalProps) {
-  const router = useRouter();
-  const pathname = usePathname();
+function Taxes({ rate, subtotal }: SubtotalProps) {
   const searchParams = useSearchParams();
   const [taxRate, setTaxRate] = useState(
     searchParams.get("tax-rate") || `${DEFAULT_TAX_RATE}`
   );
-  const { createQueryString } = useQueryString();
-  const { subtotal } = getParsedSearchParams({
-    subtotal: searchParams.get("subtotal")
-  });
+  const { pushQueryString } = useQueryString();
 
   const options: Option[] = useMemo(() => {
     return [
@@ -44,8 +39,8 @@ function Taxes({ rate }: SubtotalProps) {
   }, [rate, subtotal]);
 
   useEffect(() => {
-    router.push(pathname + "?" + createQueryString("tax-rate", taxRate));
-  }, [pathname, router, taxRate]);
+    pushQueryString("tax-rate", taxRate);
+  }, [pushQueryString, taxRate]);
 
   return (
     <Card>

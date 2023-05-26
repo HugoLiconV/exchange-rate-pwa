@@ -1,26 +1,21 @@
 "use client";
 import { Card, Option, RadioGroup, Text } from "@components/ui";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useQueryString } from "@hooks";
-import { getParsedSearchParams } from "app/src/utils";
 import { DEFAULT_TIP_RATE } from "app/src/constants";
 import { useEffect, useMemo, useState } from "react";
 
 type TipProps = {
   rate: number;
+  subtotal: number;
 };
 
-function Tip({ rate }: TipProps) {
-  const router = useRouter();
-  const pathname = usePathname();
+function Tip({ rate, subtotal }: TipProps) {
   const searchParams = useSearchParams();
   const [tipRate, setTipRate] = useState(
     searchParams.get("tip-rate") || `${DEFAULT_TIP_RATE}`
   );
-  const { createQueryString } = useQueryString();
-  const { subtotal } = getParsedSearchParams({
-    subtotal: searchParams.get("subtotal")
-  });
+  const { pushQueryString } = useQueryString();
 
   const options: Option[] = useMemo(() => {
     return [
@@ -44,8 +39,8 @@ function Tip({ rate }: TipProps) {
   }, [rate, subtotal]);
 
   useEffect(() => {
-    router.push(pathname + "?" + createQueryString("tip-rate", tipRate));
-  }, [pathname, router, tipRate]);
+    pushQueryString("tip-rate", tipRate);
+  }, [pushQueryString, tipRate]);
 
   return (
     <Card>

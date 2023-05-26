@@ -1,20 +1,15 @@
 "use client";
 import { Button, Text } from "@components/ui";
-import { formatCurrency, getParsedSearchParams } from "app/src/utils";
-import { useSearchParams } from "next/navigation";
+import { formatCurrency } from "app/src/utils";
 
 type TotalProps = {
   rate: number;
+  subtotal: number;
+  taxRate: number;
+  tipRate: number;
 };
 
-function Total({ rate }: TotalProps) {
-  const searchParams = useSearchParams();
-  const { subtotal, taxRate, tipRate } = getParsedSearchParams({
-    subtotal: searchParams.get("subtotal"),
-    taxRate: searchParams.get("tax-rate"),
-    tipRate: searchParams.get("tip-rate")
-  });
-
+function Total({ rate, subtotal, taxRate, tipRate }: TotalProps) {
   const totalTransactionAmount =
     subtotal * (taxRate / 100) + subtotal * (tipRate / 100) + subtotal;
   const totalLocalAmount = totalTransactionAmount * rate;

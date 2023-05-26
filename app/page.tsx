@@ -1,9 +1,14 @@
 import { PageProps } from ".next/types/app/page";
 import { Rate, Subtotal, Taxes, Tip, Total } from "@components";
 import { getCurrencyRate } from "@services/currencyRate";
+import { getParsedSearchParams } from "./src/utils";
 
 export default async function Home({ searchParams }: PageProps) {
-  console.log("🚀 ~ file: page.tsx:6 ~ Home ~ searchParams:", searchParams);
+  const { subtotal, taxRate, tipRate } = getParsedSearchParams({
+    subtotal: searchParams.subtotal,
+    taxRate: searchParams["tax-rate"],
+    tipRate: searchParams["tip-rate"]
+  });
   const rate = await getCurrencyRate({
     amount: 1
   });
@@ -14,12 +19,16 @@ export default async function Home({ searchParams }: PageProps) {
       <div className="w-full items-center justify-between px-4 pt-6">
         <Subtotal rate={rate.crdhldBillAmt} />
         <div className="h-4" />
-        <Taxes rate={rate.crdhldBillAmt} />
+        <Taxes rate={rate.crdhldBillAmt} subtotal={subtotal} />
         <div className="h-4" />
-        <Tip rate={rate.crdhldBillAmt} />
+        <Tip rate={rate.crdhldBillAmt} subtotal={subtotal} />
         <div className="h-4" />
-        <div className="h-4" />
-        <Total rate={rate.crdhldBillAmt} />
+        <Total
+          rate={rate.crdhldBillAmt}
+          subtotal={subtotal}
+          taxRate={taxRate}
+          tipRate={tipRate}
+        />
       </div>
     </main>
   );
