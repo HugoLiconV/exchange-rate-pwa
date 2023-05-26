@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   icons: {
     icon: "/icons/icon-512x512.png"
   },
-  themeColor: "#ffffff",
-  manifest: '/manifest.json',
+  themeColor: "#000",
+  manifest: "/manifest.json"
 };
 
 export default function RootLayout({
