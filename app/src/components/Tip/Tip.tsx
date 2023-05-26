@@ -1,55 +1,65 @@
 "use client";
-import { Card, Text } from "@components/ui";
-import { TipSelector } from "./components";
+import { Card, Option, RadioGroup, Text } from "@components/ui";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useQueryString } from "@hooks";
-import { formatCurrency, isNullish } from "app/src/utils";
+import { getParsedSearchParams } from "app/src/utils";
 import { DEFAULT_TIP_RATE } from "app/src/constants";
+import { useEffect, useMemo, useState } from "react";
 
 type TipProps = {
-  localAmount: number;
-  transactionAmount: number;
+  rate: number;
 };
 
-function Tip({ localAmount, transactionAmount }: TipProps) {
+function Tip({ rate }: TipProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [tipRate, setTipRate] = useState(
+    searchParams.get("tip") || `${DEFAULT_TIP_RATE}`
+  );
   const { createQueryString } = useQueryString();
+  const { subtotal } = getParsedSearchParams({
+    subtotal: searchParams.get("subtotal")
+  });
 
-  const handleOnChange = (value: string) => {
-    router.push(pathname + "?" + createQueryString("tip", value));
-  };
+  const options: Option[] = useMemo(() => {
+    return [
+      {
+        label: "0%",
+        value: "0"
+      },
+      {
+        label: "10%",
+        value: "10",
+        localAmount: subtotal * 0.1 * rate,
+        transactionAmount: subtotal * 0.1
+      },
+      {
+        label: "15%",
+        value: "15",
+        localAmount: subtotal * 0.15 * rate,
+        transactionAmount: subtotal * 0.15
+      }
+    ];
+  }, [rate, subtotal]);
+
+  useEffect(() => {
+    router.push(pathname + "?" + createQueryString("tip", tipRate));
+  }, [pathname, router, tipRate]);
 
   return (
     <Card>
-      <span>💁‍♂️</span>
-      <div className="h-3" />
-      <Text variant="small">Tip</Text>
+      <div className="flex gap-1">
+        <span>💁‍♂️</span>
+        <Text>Tip</Text>
+      </div>
       <div className="h-2" />
-      <TipSelector
-        onChange={handleOnChange}
-        defaultOption={
-          isNullish(searchParams.get("tip"))
-            ? `${DEFAULT_TIP_RATE}`
-            : searchParams.get("tip")
-        }
+      <RadioGroup
+        options={options}
+        defaultOption={tipRate}
+        onChange={setTipRate}
+        className="flex space-x-2 w-full"
       />
-      <div className="h-2" />
-      <Text>
-        {formatCurrency({
-          value: transactionAmount,
-          currency: "CAD"
-        })}
-      </Text>
-      <div className="h-0.5" />
-      <Text variant="small">
-        {formatCurrency({
-          value: localAmount,
-          currency: "MXN",
-          currencyDisplay: "code"
-        })}
-      </Text>
     </Card>
   );
 }

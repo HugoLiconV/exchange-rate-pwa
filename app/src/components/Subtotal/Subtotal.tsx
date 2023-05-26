@@ -3,25 +3,33 @@ import { Card, NumberInput, Text } from "@components/ui";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useQueryString } from "@hooks";
 import { formatCurrency } from "app/src/utils";
+import { useState } from "react";
 
 type SubtotalProps = {
-  localAmountSubtotal: number;
+  rate: number;
 };
 
-function Subtotal({ localAmountSubtotal }: SubtotalProps) {
+function Subtotal({ rate }: SubtotalProps) {
+  const searchParams = useSearchParams();
+  const [amount, setAmount] = useState(
+    Number(searchParams.get("subtotal") ?? "")
+  );
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const { createQueryString } = useQueryString();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9.]/g, "");
+    setAmount(Number(value));
     router.push(pathname + "?" + createQueryString("subtotal", value));
   };
 
   return (
     <Card>
-      <span>💸</span>
+      <div className="flex gap-1">
+        <span>💸</span>
+        <Text>Subtotal</Text>
+      </div>
       <div className="h-3" />
       <div className="flex">
         <div className="flex-1 flex flex-col">
@@ -31,6 +39,7 @@ function Subtotal({ localAmountSubtotal }: SubtotalProps) {
             id="subtotal"
             name="subtotal"
             className="w-full"
+            placeholder="$0.00"
             defaultValue={searchParams.get("subtotal") ?? ""}
             mask="currency"
             onChange={handleOnChange}
@@ -44,7 +53,7 @@ function Subtotal({ localAmountSubtotal }: SubtotalProps) {
           <div className="h-2" />
           <Text>
             {formatCurrency({
-              value: localAmountSubtotal,
+              value: rate * amount,
               currency: "MXN"
             })}
           </Text>

@@ -1,56 +1,65 @@
 "use client";
-import { Card, NumberInput, Text } from "@components/ui";
+import { Card, Option, RadioGroup, Text } from "@components/ui";
 import { useQueryString } from "@hooks";
 import { DEFAULT_TAX_RATE } from "app/src/constants";
-import { formatCurrency } from "app/src/utils";
+import { getParsedSearchParams } from "app/src/utils";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 type SubtotalProps = {
-  localAmountSubtotal: number;
+  rate: number;
 };
 
-function Taxes({ localAmountSubtotal }: SubtotalProps) {
+function Taxes({ rate }: SubtotalProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [taxRate, setTaxRate] = useState(
+    searchParams.get("taxes") || `${DEFAULT_TAX_RATE}`
+  );
   const { createQueryString } = useQueryString();
+  const { subtotal } = getParsedSearchParams({
+    subtotal: searchParams.get("subtotal")
+  });
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9.]/g, "");
-    router.push(pathname + "?" + createQueryString("tax", value));
-  };
+  const options: Option[] = useMemo(() => {
+    return [
+      {
+        label: "0%",
+        value: "0"
+      },
+      {
+        label: "10%",
+        value: "10",
+        localAmount: subtotal * 0.1 * rate,
+        transactionAmount: subtotal * 0.1
+      },
+      {
+        label: "~15%",
+        value: "14.975",
+        localAmount: subtotal * 0.14975 * rate,
+        transactionAmount: subtotal * 0.14975
+      }
+    ];
+  }, [rate, subtotal]);
+
+  useEffect(() => {
+    router.push(pathname + "?" + createQueryString("taxes", taxRate));
+  }, [pathname, router, taxRate]);
 
   return (
     <Card>
-      <span>🧾</span>
-      <div className="h-3" />
-      <div className="flex">
-        <div className="flex-1">
-          <Text variant="small">Taxes</Text>
-          <div className="h-2" />
-          <NumberInput
-            id="taxes"
-            name="taxes"
-            className="w-full"
-            mask="percent"
-            defaultValue={searchParams.get("taxes") || `${DEFAULT_TAX_RATE}`}
-            onChange={handleOnChange}
-          />
-        </div>
-        <div className="w-4" />
-        <div className="border-r"></div>
-        <div className="w-4" />
-        <div className="flex-1">
-          <Text variant="small">MXN</Text>
-          <div className="h-2" />
-          <Text>
-            {formatCurrency({
-              value: localAmountSubtotal,
-              currency: "MXN"
-            })}
-          </Text>
-        </div>
+      <div className="flex gap-1">
+        <span>🧾</span>
+        <Text>Taxes</Text>
       </div>
+      <div className="h-3" />
+      <RadioGroup
+        options={options}
+        defaultOption={taxRate}
+        onChange={setTaxRate}
+        className="flex space-x-2 w-full"
+      />
     </Card>
   );
 }
