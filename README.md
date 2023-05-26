@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This currency converter tool provides foreign exchange rates by Mastercard to convert from CAD to MXN. It also provides a simple way to calculate the final amount in MXN and CAD after applying taxes and tips.
 
 ## Getting Started
 
