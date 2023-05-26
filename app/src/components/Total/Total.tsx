@@ -14,8 +14,16 @@ function Total({ rate, subtotal, taxRate, tipRate }: TotalProps) {
     subtotal * (taxRate / 100) + subtotal * (tipRate / 100) + subtotal;
   const totalLocalAmount = totalTransactionAmount * rate;
 
+  const handleOnClick = () => {
+    try {
+      navigator.clipboard.writeText(totalLocalAmount.toFixed(2).toString());
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <Button>
+    <Button onClick={handleOnClick}>
       {formatCurrency({
         value: totalLocalAmount,
         currency: "MXN",
