@@ -1,3 +1,4 @@
+export { default as Container } from "./Container";
 export { default as Rate } from "./Rate";
 export { default as Subtotal } from "./Subtotal";
 export { default as Taxes } from "./Taxes";

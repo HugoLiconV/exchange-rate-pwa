@@ -1,22 +1,15 @@
 "use client";
 import { Card, Option, RadioGroup, Text } from "@components/ui";
-import { useSearchParams } from "next/navigation";
-import { useQueryString } from "@hooks";
-import { DEFAULT_TIP_RATE } from "app/src/constants";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 type TipProps = {
   rate: number;
   subtotal: number;
+  tipRate: number;
+  onTipRateChange: (tipRate: number) => void;
 };
 
-function Tip({ rate, subtotal }: TipProps) {
-  const searchParams = useSearchParams();
-  const [tipRate, setTipRate] = useState(
-    searchParams.get("tip-rate") || `${DEFAULT_TIP_RATE}`
-  );
-  const { pushQueryString } = useQueryString();
-
+function Tip({ rate, subtotal, onTipRateChange, tipRate }: TipProps) {
   const options: Option[] = useMemo(() => {
     return [
       {
@@ -38,9 +31,9 @@ function Tip({ rate, subtotal }: TipProps) {
     ];
   }, [rate, subtotal]);
 
-  useEffect(() => {
-    pushQueryString("tip-rate", tipRate);
-  }, [pushQueryString, tipRate]);
+  const handleOnChange = (value: string) => {
+    onTipRateChange(Number(value));
+  };
 
   return (
     <Card>
@@ -51,8 +44,8 @@ function Tip({ rate, subtotal }: TipProps) {
       <div className="h-3" />
       <RadioGroup
         options={options}
-        defaultOption={tipRate}
-        onChange={setTipRate}
+        defaultOption={tipRate.toString()}
+        onChange={handleOnChange}
         className="flex space-x-2 w-full"
       />
     </Card>

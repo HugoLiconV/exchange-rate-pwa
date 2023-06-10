@@ -1,23 +1,17 @@
 "use client";
 import { Card, NumberInput, Text } from "@components/ui";
-import { useSearchParams } from "next/navigation";
-import { useQueryString } from "@hooks";
 import { formatCurrency } from "app/src/utils";
-import { useState } from "react";
 
 type SubtotalProps = {
   rate: number;
+  subtotal: number | undefined;
+  onSubtotalChange: (subtotal: number) => void;
 };
 
-function Subtotal({ rate }: SubtotalProps) {
-  const searchParams = useSearchParams();
-  const [amount, setAmount] = useState(searchParams.get("subtotal") ?? "");
-  const { pushQueryString } = useQueryString();
-
+function Subtotal({ rate, onSubtotalChange, subtotal }: SubtotalProps) {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9.]/g, "");
-    setAmount(value);
-    pushQueryString("subtotal", value);
+    onSubtotalChange(Number(value));
   };
 
   return (
@@ -38,7 +32,7 @@ function Subtotal({ rate }: SubtotalProps) {
             name="subtotal"
             className="w-full"
             placeholder="$0.00"
-            defaultValue={amount}
+            value={subtotal?.toString()}
             mask="currency"
             onChange={handleOnChange}
           />
@@ -53,7 +47,7 @@ function Subtotal({ rate }: SubtotalProps) {
           <div className="h-2" />
           <Text>
             {formatCurrency({
-              value: rate * Number(amount),
+              value: rate * (subtotal || 0),
               currency: "MXN"
             })}
           </Text>
