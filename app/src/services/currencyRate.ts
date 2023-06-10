@@ -43,5 +43,5 @@ export async function getCurrencyRate(
 
   const parsedRes = (await res.json()) as { data: CurrencyRate };
   const { data } = parsedRes;
-  return data
+  return data;
 }

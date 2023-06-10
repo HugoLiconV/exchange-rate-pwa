@@ -1,22 +1,15 @@
 "use client";
 import { Card, Option, RadioGroup, Text } from "@components/ui";
-import { useQueryString } from "@hooks";
-import { DEFAULT_TAX_RATE } from "app/src/constants";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 type SubtotalProps = {
   rate: number;
   subtotal: number;
+  taxRate: number;
+  onTaxRateChange: (taxRate: number) => void;
 };
 
-function Taxes({ rate, subtotal }: SubtotalProps) {
-  const searchParams = useSearchParams();
-  const [taxRate, setTaxRate] = useState(
-    searchParams.get("tax-rate") || `${DEFAULT_TAX_RATE}`
-  );
-  const { pushQueryString } = useQueryString();
-
+function Taxes({ rate, subtotal, onTaxRateChange, taxRate }: SubtotalProps) {
   const options: Option[] = useMemo(() => {
     return [
       {
@@ -38,9 +31,9 @@ function Taxes({ rate, subtotal }: SubtotalProps) {
     ];
   }, [rate, subtotal]);
 
-  useEffect(() => {
-    pushQueryString("tax-rate", taxRate);
-  }, [pushQueryString, taxRate]);
+  const handleOnChange = (value: string) => {
+    onTaxRateChange(Number(value));
+  };
 
   return (
     <Card>
@@ -51,8 +44,8 @@ function Taxes({ rate, subtotal }: SubtotalProps) {
       <div className="h-3" />
       <RadioGroup
         options={options}
-        defaultOption={taxRate}
-        onChange={setTaxRate}
+        defaultOption={taxRate.toString()}
+        onChange={handleOnChange}
         className="flex space-x-2 w-full"
       />
     </Card>
