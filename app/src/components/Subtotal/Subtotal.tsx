@@ -5,13 +5,13 @@ import { formatCurrency } from "app/src/utils";
 type SubtotalProps = {
   rate: number;
   subtotal: number | undefined;
-  onSubtotalChange: (subtotal: number) => void;
+  onSubtotalChange: (subtotal: number | undefined) => void;
 };
 
 function Subtotal({ rate, onSubtotalChange, subtotal }: SubtotalProps) {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9.]/g, "");
-    onSubtotalChange(Number(value));
+    onSubtotalChange(value ? Number(value) : undefined);
   };
 
   return (
