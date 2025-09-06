@@ -5,15 +5,15 @@ import type { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Exchange Rate CAD",
+  title: "Exchange Rate USD",
   description:
     "Currency converter tool provides foreign exchange rates by Mastercard",
   appleWebApp: {
     statusBarStyle: "default",
     capable: true, // Whether the web app is capable of full-screen display.
-    title: "Exchange Rate CAD"
+    title: "Exchange Rate USD"
   },
-  applicationName: "Exchange Rate CAD",
+  applicationName: "Exchange Rate USD",
   icons: {
     icon: "/icons/icon-512x512.png"
   },

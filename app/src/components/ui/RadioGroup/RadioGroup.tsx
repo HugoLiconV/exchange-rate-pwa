@@ -68,7 +68,7 @@ function RadioGroup({
                   >
                     {formatCurrency({
                       value: option.transactionAmount ?? 0,
-                      currency: "CAD"
+                      currency: "USD"
                     })}
                   </Text>
                 </>

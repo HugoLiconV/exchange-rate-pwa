@@ -17,16 +17,16 @@ function Taxes({ rate, subtotal, onTaxRateChange, taxRate }: SubtotalProps) {
         value: "0"
       },
       {
+        label: "8.25%",
+        value: "8.25",
+        localAmount: subtotal * 0.0825 * rate,
+        transactionAmount: subtotal * 0.0825
+      },
+      {
         label: "10%",
         value: "10",
         localAmount: subtotal * 0.1 * rate,
         transactionAmount: subtotal * 0.1
-      },
-      {
-        label: "~15%",
-        value: "14.975",
-        localAmount: subtotal * 0.14975 * rate,
-        transactionAmount: subtotal * 0.14975
       }
     ];
   }, [rate, subtotal]);

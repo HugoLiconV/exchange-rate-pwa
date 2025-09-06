@@ -24,7 +24,7 @@ function Subtotal({ rate, onSubtotalChange, subtotal }: SubtotalProps) {
       <div className="flex">
         <div className="flex-1 flex flex-col">
           <Text variant="xs" color="gray-600">
-            CAD
+            USD
           </Text>
           <div className="h-2" />
           <NumberInput

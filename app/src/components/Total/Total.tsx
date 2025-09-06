@@ -33,7 +33,7 @@ function Total({ rate, subtotal, taxRate, tipRate }: TotalProps) {
       <Text color="gray-300" variant="small">
         {formatCurrency({
           value: totalTransactionAmount,
-          currency: "CAD"
+          currency: "USD"
         })}
       </Text>
     </Button>
