@@ -1,4 +1,4 @@
-This currency converter tool provides foreign exchange rates by Mastercard to convert from CAD to MXN. It also provides a simple way to calculate the final amount in MXN and CAD after applying taxes and tips.
+This currency converter tool provides foreign exchange rates by Mastercard to convert from USD to MXN. It also provides a simple way to calculate the final amount in MXN and USD after applying taxes and tips.
 
 <img src="https://github.com/HugoLiconV/exchange-rate-pwa/assets/22970186/c341bcc8-75d0-4fcd-8615-0dee911ace4f" width="250" />
 
