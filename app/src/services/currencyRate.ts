@@ -22,7 +22,7 @@ export async function getCurrencyRate(
   );
   const queryParams: Record<string, number | string> = {
     fxDate: "0000-00-00",
-    transCurr: params?.transCurr || "CAD",
+    transCurr: params?.transCurr || "USD",
     crdhldBillCurr: "MXN",
     bankFee: 0,
     transAmt: params.amount
