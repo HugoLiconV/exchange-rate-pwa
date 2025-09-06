@@ -4,12 +4,12 @@ import { formatCurrency } from "app/src/utils";
 import { useState } from "react";
 
 type RateProps = {
-  rate: number;
   usdRate: number;
+  cadRate: number;
 };
 
-function Rate({ rate, usdRate }: RateProps) {
-  const [selectedRate, setSelectedRate] = useState<"CAD" | "USD">("CAD");
+function Rate({ usdRate, cadRate }: RateProps) {
+  const [selectedRate, setSelectedRate] = useState<"CAD" | "USD">("USD");
   const [longPressTimeout, setLongPressTimeout] =
     useState<NodeJS.Timeout | null>(null);
 
@@ -36,14 +36,14 @@ function Rate({ rate, usdRate }: RateProps) {
       onTouchEnd={handleEnd}
     >
       <Text variant="small" color="gray-300">
-        {selectedRate === "CAD" ? "1 CAD = " : "1 USD = "}
+        {selectedRate === "USD" ? "1 USD = " : "1 CAD = "}
       </Text>
       <div className="h-2" />
       <div className="flex gap-1">
-        <span>{selectedRate === "CAD" ? "🇨🇦" : "🇺🇸"}</span>
+        <span>{selectedRate === "USD" ? "🇺🇸" : "🇨🇦"}</span>
         <Text color="light">
           {formatCurrency({
-            value: selectedRate === "CAD" ? rate : usdRate,
+            value: selectedRate === "USD" ? usdRate : cadRate,
             currency: "MXN",
             currencyDisplay: "code"
           })}

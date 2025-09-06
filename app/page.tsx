@@ -2,19 +2,19 @@ import { Container } from "@components";
 import { getCurrencyRate } from "@services/currencyRate";
 
 export default async function Home() {
-  const ratePromise = getCurrencyRate({
+  const usdRatePromise = getCurrencyRate({
     amount: 1
   });
-  const usdRatePromise = getCurrencyRate({
+  const cadRatePromise = getCurrencyRate({
     amount: 1,
-    transCurr: "USD"
+    transCurr: "CAD"
   });
 
-  const [rate, usdRate] = await Promise.all([ratePromise, usdRatePromise]);
+  const [usdRate, cadRate] = await Promise.all([usdRatePromise, cadRatePromise]);
 
   return (
     <main className="min-h-screen flex flex-col items-center mx-auto max-w-lg">
-      <Container rate={rate.conversionRate} usdRate={usdRate.conversionRate} />
+      <Container usdRate={usdRate.conversionRate} cadRate={cadRate.conversionRate} />
     </main>
   );
 }
